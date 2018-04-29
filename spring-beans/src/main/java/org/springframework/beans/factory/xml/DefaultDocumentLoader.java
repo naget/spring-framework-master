@@ -16,18 +16,17 @@
 
 package org.springframework.beans.factory.xml;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.util.xml.XmlValidationModeDetector;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 
-import org.springframework.util.xml.XmlValidationModeDetector;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Spring's default {@link DocumentLoader} implementation.
@@ -63,6 +62,7 @@ public class DefaultDocumentLoader implements DocumentLoader {
 	/**
 	 * Load the {@link Document} at the supplied {@link InputSource} using the standard JAXP-configured
 	 * XML parser.
+	 * 首先创建DocumentBuilderFactory,在通过DocumentBuilderFactory创建DocumentBuilder,进而解析inputSource来返回Document
 	 */
 	@Override
 	public Document loadDocument(InputSource inputSource, EntityResolver entityResolver,
