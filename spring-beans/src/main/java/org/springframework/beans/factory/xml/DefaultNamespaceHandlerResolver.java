@@ -16,14 +16,8 @@
 
 package org.springframework.beans.factory.xml;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -31,6 +25,11 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Default implementation of the {@link NamespaceHandlerResolver} interface.
@@ -109,6 +108,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	 * from the configured mappings.
 	 * @param namespaceUri the relevant namespace URI
 	 * @return the located {@link NamespaceHandler}, or {@code null} if none found
+	 * 根据命名空间找到对应的处理器
 	 */
 	@Override
 	public NamespaceHandler resolve(String namespaceUri) {
@@ -117,9 +117,11 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 		if (handlerOrClassName == null) {
 			return null;
 		}
+		//已经做过解析，直接从缓存读取
 		else if (handlerOrClassName instanceof NamespaceHandler) {
 			return (NamespaceHandler) handlerOrClassName;
 		}
+		//第一次解析，反射实例化对象，加入缓存，并返回
 		else {
 			String className = (String) handlerOrClassName;
 			try {

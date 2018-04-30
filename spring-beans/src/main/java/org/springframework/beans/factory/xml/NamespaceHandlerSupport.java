@@ -16,15 +16,14 @@
 
 package org.springframework.beans.factory.xml;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.BeanDefinitionHolder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Support class for implementing custom {@link NamespaceHandler NamespaceHandlers}.
@@ -79,7 +78,9 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	 * the local name of the supplied {@link Element}.
 	 */
 	private BeanDefinitionParser findParserForElement(Element element, ParserContext parserContext) {
+		//获取元素名称，也就是<myname:user中的user，此时localname为user
 		String localName = parserContext.getDelegate().getLocalName(element);
+		//根据user找到对应解析器，就是在handler中注册的解析器UserBeanDefinitionParser
 		BeanDefinitionParser parser = this.parsers.get(localName);
 		if (parser == null) {
 			parserContext.getReaderContext().fatal(
