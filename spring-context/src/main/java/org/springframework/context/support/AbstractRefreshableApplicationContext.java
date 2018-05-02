@@ -125,7 +125,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 		try {
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
 			beanFactory.setSerializationId(getId());
-			customizeBeanFactory(beanFactory);
+			customizeBeanFactory(beanFactory);//只干了两个事 1：设置是否允许覆盖同名称的不同定义的对象 2：设置是否允许循环依赖
 			loadBeanDefinitions(beanFactory);
 			synchronized (this.beanFactoryMonitor) {
 				this.beanFactory = beanFactory;
