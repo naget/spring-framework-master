@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
  */
 @SuppressWarnings("deprecation")
 public class BeanFactoryTest {
-@Test
+    @Test
     public void testSimpleLoad(){
         BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("spring-beans"));
         MyTestBean myTestBean = (MyTestBean) beanFactory.getBean("myTestBean");
@@ -24,6 +24,7 @@ public class BeanFactoryTest {
     @Test
     public void testCustomPraser(){
         ApplicationContext bf = new ClassPathXmlApplicationContext("spring-beans");
+
         User user = (User) bf.getBean("testbean");
         System.out.println(user.getUserName()+","+user.getEmail());
     }
