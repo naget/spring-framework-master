@@ -6,6 +6,45 @@
                             http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                             http://www.tfdebug.org/schema/user http://www.tfdebug.org/schema/user.xsd
 ">
+    <!--普通bean-->
     <bean id="myTestBean" class="tfdebug.spring.MyTestBean"/>
+    <!--自定义标签测试bean-->
     <myname:user id="testbean" userName="aaa" email="bbb"/>
+    <!--属性编辑器测试bean,不设置属性编辑器时会报错Failed to convert property value of type 'java.lang.String' to required type 'java.util.Date'-->
+    <bean id="userManager" class="tfdebug.spring.UserManager">
+        <property name="dateValue" value="2013-3-5"/>
+    </bean>
+    <!--将自定义的属性编辑器注册到Spring中-->
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <!--这种方式会报错Cannot convert value of type 'tfdebug.spring.DatePropertyEditor' to required type 'java.lang.Class' for property 'customEditors[java.util.Date]': PropertyEditor [org.springframework.beans.propertyeditors.ClassEditor] returned inappropriate value of type 'tfdebug.spring.DatePropertyEditor'-->
+            <!--<map>-->
+            <!--<entry key="java.util.Date">-->
+            <!--<bean class="tfdebug.spring.DatePropertyEditor">-->
+            <!--<property name="format" value="yyyy-MM-dd"/>-->
+            <!--</bean>-->
+            <!--</entry>-->
+            <!--</map>-->
+            <map>
+                <entry key="java.util.Date" value="tfdebug.spring.DatePropertyEditor">
+                </entry>
+            </map>
+        </property>
+    </bean>
+    <!--beanFactoryPostProcessor-->
+    <bean id="bfpp" class="tfdebug.spring.ObscenityRemovingBeanFactoryPostProcessor">
+        <property name="obscenties">
+            <set>
+                <value>bollocks</value>
+                <value>winky</value>
+                <value>bum</value>
+                <value>Microsoft</value>
+            </set>
+        </property>
+    </bean>
+    <bean id="simpleBean" class="tfdebug.spring.SimpleBean">
+        <property name="name" value="bollocks"/>
+        <property name="sex" value="boy"/>
+        <property name="age" value="ten"/>
+    </bean>
 </beans>
