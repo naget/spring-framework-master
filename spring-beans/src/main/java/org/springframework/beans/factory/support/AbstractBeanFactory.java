@@ -206,7 +206,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		//缓存中没有需要的bean，则else
 		else {
 			// Fail if we're already creating this bean instance:
-			// We're assumably within a circular reference.
+			// We're assumably within a circular reference.getbean（）时候如果是原型bean存在循环依赖则直接抛出异常
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
@@ -214,7 +214,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			// Check if bean definition exists in this factory.
 			BeanFactory parentBeanFactory = getParentBeanFactory();
 			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
-				// Not found -> check parent.
+				// Not found -> check parent.这个方法就是如果beanname以&开头，就在它前面再加一个&
 				String nameToLookup = originalBeanName(name);
 				if (args != null) {
 					// Delegation to parent with explicit args.
@@ -234,7 +234,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 				checkMergedBeanDefinition(mbd, beanName, args);
 
-				// Guarantee initialization of beans that the current bean depends on.
+				// Guarantee initialization of beans that the current bean depends on.递归加载bean的依赖
 				String[] dependsOn = mbd.getDependsOn();
 				if (dependsOn != null) {
 					for (String dep : dependsOn) {
@@ -1317,7 +1317,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			if (mbd.hasBeanClass()) {
 				return mbd.getBeanClass();
 			}
-			if (System.getSecurityManager() != null) {
+			if (System.getSecurityManager() != null) {// TODO: 2018/5/7 这两个分之调用的方法都是一样的，不太明白，安全控制还需要再看看
 				return AccessController.doPrivileged(new PrivilegedExceptionAction<Class<?>>() {
 					@Override
 					public Class<?> run() throws Exception {
